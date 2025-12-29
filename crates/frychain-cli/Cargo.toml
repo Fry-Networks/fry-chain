@@ -1,0 +1,29 @@
+[package]
+name = "frychain-cli"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Command-line interface for FryChain"
+
+[dependencies]
+frychain-core = { path = "../frychain-core" }
+frychain-crypto = { path = "../frychain-crypto" }
+frychain-storage = { path = "../frychain-storage" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+clap = { workspace = true }
+dialoguer = { workspace = true }
+indicatif = { workspace = true }
+console = { workspace = true }
+hex = { workspace = true }
+bs58 = { workspace = true }
+jsonrpsee = { workspace = true }
+
+[[bin]]
+name = "frycli"
+path = "src/main.rs"

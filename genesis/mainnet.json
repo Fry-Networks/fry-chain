@@ -1,0 +1,52 @@
+{
+  "chain_id": 1,
+  "network_name": "FryChain Mainnet",
+  "timestamp": 1735430400,
+  "difficulty": "0x100000",
+  "gas_limit": 30000000,
+  "coinbase": "fry1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+  "extra_data": "0x4672794368616e2047656e65736973202d20506f73742d5175616e74756d20506f57",
+  "alloc": {
+    "fry1foundation000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000": {
+      "balance": "21000000000000000000000000",
+      "comment": "Foundation allocation - 10% (21M FRY)"
+    },
+    "fry1ecosystem00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000": {
+      "balance": "21000000000000000000000000",
+      "comment": "Ecosystem development - 10% (21M FRY)"
+    },
+    "fry1community00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000": {
+      "balance": "10500000000000000000000000",
+      "comment": "Community rewards - 5% (10.5M FRY)"
+    }
+  },
+  "consensus": {
+    "algorithm": "CryptoNight-STC",
+    "target_block_time": 60,
+    "difficulty_adjustment_window": 720,
+    "initial_block_reward": "50000000000000000000",
+    "halving_interval": 2100000
+  },
+  "vm": {
+    "sbf_enabled": true,
+    "avm_enabled": true,
+    "max_contract_size": 1048576,
+    "max_stack_depth": 1024
+  },
+  "crypto": {
+    "post_quantum_required": false,
+    "supported_algorithms": ["dilithium", "sphincs", "ed25519"],
+    "default_algorithm": "dilithium"
+  },
+  "depin": {
+    "enabled": true,
+    "device_registration_fee": "1000000000000000000",
+    "data_marketplace_fee_percent": 5
+  },
+  "network": {
+    "p2p_port": 30303,
+    "rpc_port": 8545,
+    "max_peers": 50,
+    "bootnodes": []
+  }
+}

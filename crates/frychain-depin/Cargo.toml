@@ -1,0 +1,25 @@
+[package]
+name = "frychain-depin"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "DePIN (Decentralized Physical Infrastructure Network) features for FryChain"
+
+[dependencies]
+frychain-core = { path = "../frychain-core" }
+frychain-crypto = { path = "../frychain-crypto" }
+frychain-storage = { path = "../frychain-storage" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+hex = { workspace = true }
+bs58 = { workspace = true }
+parking_lot = { workspace = true }
+dashmap = { workspace = true }
+
+[dev-dependencies]
+tempfile = { workspace = true }

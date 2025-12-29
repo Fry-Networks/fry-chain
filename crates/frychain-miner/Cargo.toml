@@ -1,0 +1,31 @@
+[package]
+name = "frychain-miner"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Mining software for FryChain using CryptoNight-STC"
+
+[dependencies]
+frychain-core = { path = "../frychain-core" }
+frychain-crypto = { path = "../frychain-crypto" }
+frychain-consensus = { path = "../frychain-consensus" }
+frychain-network = { path = "../frychain-network" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+futures = { workspace = true }
+async-trait = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+clap = { workspace = true }
+indicatif = { workspace = true }
+console = { workspace = true }
+parking_lot = { workspace = true }
+rayon = { workspace = true }
+num_cpus = "1.16"
+
+[[bin]]
+name = "frychain-miner"
+path = "src/main.rs"

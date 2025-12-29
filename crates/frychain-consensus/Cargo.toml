@@ -1,0 +1,26 @@
+[package]
+name = "frychain-consensus"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "PoW consensus with CryptoNight-STC for FryChain"
+
+[dependencies]
+frychain-core = { path = "../frychain-core" }
+frychain-crypto = { path = "../frychain-crypto" }
+frychain-storage = { path = "../frychain-storage" }
+serde = { workspace = true }
+tokio = { workspace = true }
+futures = { workspace = true }
+async-trait = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+parking_lot = { workspace = true }
+dashmap = { workspace = true }
+num-bigint = { workspace = true }
+num-traits = { workspace = true }
+crossbeam = { workspace = true }
+
+[dev-dependencies]
+tempfile = { workspace = true }

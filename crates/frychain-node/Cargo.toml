@@ -1,0 +1,31 @@
+[package]
+name = "frychain-node"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Full node implementation for FryChain"
+
+[dependencies]
+frychain-core = { path = "../frychain-core" }
+frychain-crypto = { path = "../frychain-crypto" }
+frychain-consensus = { path = "../frychain-consensus" }
+frychain-vm = { path = "../frychain-vm" }
+frychain-depin = { path = "../frychain-depin" }
+frychain-network = { path = "../frychain-network" }
+frychain-storage = { path = "../frychain-storage" }
+frychain-rpc = { path = "../frychain-rpc" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+futures = { workspace = true }
+async-trait = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+clap = { workspace = true }
+parking_lot = { workspace = true }
+
+[[bin]]
+name = "frychain-node"
+path = "src/main.rs"

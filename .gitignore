@@ -1,0 +1,41 @@
+# Build artifacts
+/target/
+**/*.rs.bk
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Blockchain data
+/frychain-data/
+/devnet/
+/mainnet-data/
+/testnet-data/
+*.db
+*.log
+
+# Keys and secrets
+*.key
+*.pem
+*.secret
+.env
+.env.local
+.env.*.local
+
+# Generated files
+*.generated.*
+
+# Coverage
+/coverage/
+*.profraw
+*.profdata
+
+# Benchmarks
+/bench-results/
