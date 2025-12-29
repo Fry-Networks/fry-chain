@@ -1,0 +1,20 @@
+[package]
+name = "frychain-storage"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Storage layer using RocksDB for FryChain"
+
+[dependencies]
+frychain-core = { path = "../frychain-core" }
+serde = { workspace = true }
+bincode = { workspace = true }
+rocksdb = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+parking_lot = { workspace = true }
+bytes = { workspace = true }
+
+[dev-dependencies]
+tempfile = { workspace = true }

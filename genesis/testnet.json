@@ -1,0 +1,44 @@
+{
+  "chain_id": 2,
+  "network_name": "FryChain Testnet",
+  "timestamp": 1735430400,
+  "difficulty": "0x10000",
+  "gas_limit": 30000000,
+  "coinbase": "fry1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+  "extra_data": "0x4672794368616e2054657374696e67204e6574776f726b",
+  "alloc": {
+    "fry1testfaucet0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000": {
+      "balance": "1000000000000000000000000000",
+      "comment": "Testnet faucet - 1B FRY"
+    }
+  },
+  "consensus": {
+    "algorithm": "CryptoNight-STC",
+    "target_block_time": 30,
+    "difficulty_adjustment_window": 360,
+    "initial_block_reward": "100000000000000000000",
+    "halving_interval": 1050000
+  },
+  "vm": {
+    "sbf_enabled": true,
+    "avm_enabled": true,
+    "max_contract_size": 1048576,
+    "max_stack_depth": 1024
+  },
+  "crypto": {
+    "post_quantum_required": false,
+    "supported_algorithms": ["dilithium", "sphincs", "ed25519"],
+    "default_algorithm": "dilithium"
+  },
+  "depin": {
+    "enabled": true,
+    "device_registration_fee": "100000000000000000",
+    "data_marketplace_fee_percent": 2
+  },
+  "network": {
+    "p2p_port": 30304,
+    "rpc_port": 8546,
+    "max_peers": 50,
+    "bootnodes": []
+  }
+}
