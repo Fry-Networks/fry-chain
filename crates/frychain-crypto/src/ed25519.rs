@@ -69,8 +69,47 @@ impl std::fmt::Debug for Ed25519PrivateKey {
 }
 
 /// Ed25519 signature
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Ed25519Signature(pub [u8; 64]);
+
+impl Serialize for Ed25519Signature {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        if serializer.is_human_readable() {
+            serializer.serialize_str(&hex::encode(self.0))
+        } else {
+            serializer.serialize_bytes(&self.0)
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for Ed25519Signature {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        if deserializer.is_human_readable() {
+            let s = String::deserialize(deserializer)?;
+            let bytes = hex::decode(&s).map_err(serde::de::Error::custom)?;
+            if bytes.len() != 64 {
+                return Err(serde::de::Error::custom("expected 64 bytes for signature"));
+            }
+            let mut arr = [0u8; 64];
+            arr.copy_from_slice(&bytes);
+            Ok(Ed25519Signature(arr))
+        } else {
+            let bytes: Vec<u8> = Vec::deserialize(deserializer)?;
+            if bytes.len() != 64 {
+                return Err(serde::de::Error::custom("expected 64 bytes for signature"));
+            }
+            let mut arr = [0u8; 64];
+            arr.copy_from_slice(&bytes);
+            Ok(Ed25519Signature(arr))
+        }
+    }
+}
 
 impl Ed25519Signature {
     /// Create from raw bytes
@@ -102,9 +141,12 @@ pub struct Ed25519Keypair {
 impl Ed25519Keypair {
     /// Generate a new random keypair
     pub fn generate() -> CryptoResult<Self> {
-        use rand::rngs::OsRng;
+        use rand::RngCore;
 
-        let signing_key = ed25519_dalek::SigningKey::generate(&mut OsRng);
+        let mut secret_key_bytes = [0u8; 32];
+        rand::thread_rng().fill_bytes(&mut secret_key_bytes);
+
+        let signing_key = ed25519_dalek::SigningKey::from_bytes(&secret_key_bytes);
         let verifying_key = signing_key.verifying_key();
 
         Ok(Self {

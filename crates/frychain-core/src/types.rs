@@ -44,6 +44,14 @@ impl Hash256 {
         format!("0x{}", hex::encode(self.0))
     }
 
+    /// Create from a byte slice (must be exactly 32 bytes)
+    pub fn from_slice(bytes: &[u8]) -> Self {
+        let mut arr = [0u8; 32];
+        let len = bytes.len().min(32);
+        arr[..len].copy_from_slice(&bytes[..len]);
+        Self(arr)
+    }
+
     /// Get leading zeros count (for PoW difficulty comparison)
     pub fn leading_zeros(&self) -> u32 {
         let mut zeros = 0u32;
@@ -96,8 +104,54 @@ impl AsRef<[u8]> for Hash256 {
 }
 
 /// 512-bit hash (64 bytes) - used for extended hashes
-#[derive(Clone, Copy, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Hash512(pub [u8; 64]);
+
+impl Default for Hash512 {
+    fn default() -> Self {
+        Self([0u8; 64])
+    }
+}
+
+impl Serialize for Hash512 {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        // Serialize as hex string for JSON compatibility
+        if serializer.is_human_readable() {
+            serializer.serialize_str(&hex::encode(self.0))
+        } else {
+            serializer.serialize_bytes(&self.0)
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for Hash512 {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        if deserializer.is_human_readable() {
+            let s = String::deserialize(deserializer)?;
+            let bytes = hex::decode(&s).map_err(serde::de::Error::custom)?;
+            if bytes.len() != 64 {
+                return Err(serde::de::Error::custom("expected 64 bytes"));
+            }
+            let mut arr = [0u8; 64];
+            arr.copy_from_slice(&bytes);
+            Ok(Hash512(arr))
+        } else {
+            let bytes: Vec<u8> = Vec::deserialize(deserializer)?;
+            if bytes.len() != 64 {
+                return Err(serde::de::Error::custom("expected 64 bytes"));
+            }
+            let mut arr = [0u8; 64];
+            arr.copy_from_slice(&bytes);
+            Ok(Hash512(arr))
+        }
+    }
+}
 
 impl Hash512 {
     pub fn new(bytes: [u8; 64]) -> Self {
