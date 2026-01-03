@@ -1,6 +1,14 @@
 //! Unified VM executor
+//!
+//! Supports multiple VM backends:
+//! - SBF/eBPF (Solana-style) - Rust compiled to BPF
+//! - AVM/TEAL (Algorand-style) - Stack-based assembly
+//! - Pact (Kadena-style) - Lisp-like with formal verification
+//! - Kaspa Script (Kaspa-style) - Bitcoin-like with KIP-1 extensions
 
 use crate::avm::AVMInterpreter;
+use crate::kaspa::KaspaVM;
+use crate::pact::PactVM;
 use crate::sbf::SbfVM;
 use crate::types::{ContractType, ExecutionContext, VMResult};
 use crate::VMExecutionError;
@@ -76,6 +84,8 @@ impl VMExecutor {
         let vm_result = match contract_type {
             ContractType::SBF => self.execute_sbf(bytecode, input, context),
             ContractType::AVM => self.execute_avm(bytecode, input, context),
+            ContractType::Pact => self.execute_pact(bytecode, input, context),
+            ContractType::Kaspa => self.execute_kaspa(bytecode, input, context),
             ContractType::Native => {
                 return ExecutionResult {
                     success: false,
@@ -122,6 +132,28 @@ impl VMExecutor {
         vm.execute()
     }
 
+    /// Execute a Pact (Kadena-style) contract
+    fn execute_pact(
+        &self,
+        bytecode: &[u8],
+        input: &[u8],
+        context: ExecutionContext,
+    ) -> VMResult {
+        let mut vm = PactVM::new(context);
+        vm.execute(bytecode, input)
+    }
+
+    /// Execute a Kaspa Script contract
+    fn execute_kaspa(
+        &self,
+        bytecode: &[u8],
+        input: &[u8],
+        context: ExecutionContext,
+    ) -> VMResult {
+        let mut vm = KaspaVM::new(context);
+        vm.execute(bytecode, input)
+    }
+
     /// Deploy a new contract
     pub fn deploy(
         &self,
@@ -156,6 +188,8 @@ impl VMExecutor {
         let vm_result = match contract_type {
             ContractType::SBF => self.execute_sbf(bytecode, &[], context),
             ContractType::AVM => self.execute_avm(bytecode, &[], context),
+            ContractType::Pact => self.execute_pact(bytecode, &[], context),
+            ContractType::Kaspa => self.execute_kaspa(bytecode, &[], context),
             ContractType::Native => {
                 return ExecutionResult {
                     success: false,

@@ -11,6 +11,10 @@ pub enum ContractType {
     SBF,
     /// Algorand-style AVM/TEAL bytecode
     AVM,
+    /// Kadena-style Pact smart contracts (Lisp-like with formal verification)
+    Pact,
+    /// Kaspa-style UTXO scripts (Bitcoin-like with KIP-1 extensions)
+    Kaspa,
     /// Native precompiled contract
     Native,
 }
@@ -27,7 +31,18 @@ impl ContractType {
             return Some(ContractType::SBF);
         }
 
-        // AVM magic: 0x06 (TEAL version pragma)
+        // Pact magic: "PACT" (0x50, 0x41, 0x43, 0x54)
+        if bytecode[0..4] == [0x50, 0x41, 0x43, 0x54] {
+            return Some(ContractType::Pact);
+        }
+
+        // Kaspa magic: "KASP" (0x4B, 0x41, 0x53, 0x50)
+        if bytecode[0..4] == [0x4B, 0x41, 0x53, 0x50] {
+            return Some(ContractType::Kaspa);
+        }
+
+        // AVM magic: 0x00-0x0A (TEAL version pragma)
+        // Check this last since it's a single-byte match
         if bytecode[0] <= 0x0A {
             // TEAL versions 0-10
             return Some(ContractType::AVM);
@@ -41,7 +56,31 @@ impl ContractType {
         match self {
             ContractType::SBF => &[0x7f, b'E', b'L', b'F'],
             ContractType::AVM => &[0x06], // TEAL v6
+            ContractType::Pact => &[0x50, 0x41, 0x43, 0x54], // "PACT"
+            ContractType::Kaspa => &[0x4B, 0x41, 0x53, 0x50], // "KASP"
             ContractType::Native => &[0xFF, 0xFF],
+        }
+    }
+
+    /// Get a human-readable name for this contract type
+    pub fn name(&self) -> &'static str {
+        match self {
+            ContractType::SBF => "Solana SBF/eBPF",
+            ContractType::AVM => "Algorand AVM/TEAL",
+            ContractType::Pact => "Kadena Pact",
+            ContractType::Kaspa => "Kaspa Script",
+            ContractType::Native => "Native Precompile",
+        }
+    }
+
+    /// Get the source ecosystem for this contract type
+    pub fn ecosystem(&self) -> &'static str {
+        match self {
+            ContractType::SBF => "Solana",
+            ContractType::AVM => "Algorand",
+            ContractType::Pact => "Kadena",
+            ContractType::Kaspa => "Kaspa",
+            ContractType::Native => "FryChain",
         }
     }
 }

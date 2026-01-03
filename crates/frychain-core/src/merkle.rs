@@ -190,9 +190,9 @@ pub struct SparseMerkleTree {
     /// Non-zero leaves (key -> value)
     leaves: std::collections::HashMap<Hash256, Hash256>,
     /// Cached intermediate nodes
-    cache: std::collections::HashMap<(Hash256, u8), Hash256>,
-    /// Tree depth (256 for full address space)
-    depth: u8,
+    cache: std::collections::HashMap<(Hash256, u16), Hash256>,
+    /// Tree depth (256 for full address space, stored as u16)
+    depth: u16,
 }
 
 impl SparseMerkleTree {
